@@ -20,8 +20,6 @@ alias( "$(P)$(R)EventBuilder:Timeout", "$(P)$(R)Top:BatcherEventBuilder:Timeout"
 alias( "$(P)$(R)EventBuilder:TimerRst", "$(P)$(R)Top:BatcherEventBuilder:TimerRst" )
 alias( "$(P)$(R)EventBuilder:TransactionCnt", "$(P)$(R)Top:BatcherEventBuilder:TransactionCnt" )
 alias( "$(P)$(R)EventBuilder:TRANS_TDEST_G", "$(P)$(R)Top:BatcherEventBuilder:TRANS_TDEST_G" )
-alias( "$(P)$(R)Integrators:PositionXFloat64", "$(P)$(R)Top:Integrators:PositionXFloat64" )
-alias( "$(P)$(R)Integrators:PositionYFloat64", "$(P)$(R)Top:Integrators:PositionYFloat64" )
 alias( "$(P)$(R)PgpMon:RxStatus:EbOverflowCnt", "$(P)$(R)Top:PgpMon[0]:RxStatus:EbOverflowCnt" )
 alias( "$(P)$(R)PgpMon:RxStatus:LinkDownCnt", "$(P)$(R)Top:PgpMon[0]:RxStatus:LinkDownCnt" )
 alias( "$(P)$(R)PgpMon:RxStatus:LinkErrorCnt", "$(P)$(R)Top:PgpMon[0]:RxStatus:LinkErrorCnt" )

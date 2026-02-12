@@ -12,7 +12,6 @@ include $(TOP)/configure/CONFIG
 # databases, templates, substitutions like this
 
 # db templates
-DB += AdcIntegrals.db
 DB += AxiVersion.db
 DB += w8-aliases.db
 DB += Ads42Lbx9.db
