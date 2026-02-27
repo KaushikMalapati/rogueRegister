@@ -1004,7 +1004,7 @@ file longcalc.template
                 CSAVE   = "VAL"
                 EGU     = "ns"
                 CALC    = "A*1.3/7"
-		LCNAME	= "EvrV2:DelayControlReadback"
+		LCNAME	= "TrEvent:TriggerDelayControlReadback"
 		LCALC	= "A*7/1.3"
 		PREC	= "4"
         }
