@@ -872,8 +872,8 @@ file int64InDevRogue.template
 	}
 	{
 		NAME	= "EvrV2:Count",
-		PATH	= "Top.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[0].Count"
-		PYPV	= "Top:TriggerEventManager:EvrV2CoreTriggers:EvrV2ChannelReg[0]:Count"
+		PATH	= "Top.TriggerEventManager.EvrV2CoreChannels.EvrV2ChannelReg[0].Count"
+		PYPV	= "Top:TriggerEventManager:EvrV2CoreChannels:EvrV2ChannelReg[0]:Count"
 		DESC	= "Count for Start of Timing Frame"
 		SCAN	= "\$(SCAN=1 second)"
 	}
