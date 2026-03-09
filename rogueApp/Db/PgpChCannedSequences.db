@@ -15,7 +15,6 @@ record( seq, "$(PGP_CH):EvrV2Config" )
 	field( DLYA, "0.0" ) field( DOLA, "2" ) field( LNKA, "$(PGP_CH):EvrV2:RateType       PP NMS" )
 	field( DLYB, "0.0" ) field( DOLB, "2" ) field( LNKB, "$(PGP_CH):EvrV2:DestType       PP NMS" )
 	field( DLYC, "0.1" ) field( DOLC, "1" ) field( LNKC, "$(PGP_CH):EvrV2:EnableReg      PP NMS" )
-	field( DLYF, "0.1" ) field( DOLF, "1" ) field( LNKF, "$(PGP_CH):EvrV2:EnableTrig     PP NMS" )
 
 	info( autosaveFields, "DESC" )
 }

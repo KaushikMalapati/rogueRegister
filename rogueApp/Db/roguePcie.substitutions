@@ -203,16 +203,6 @@ file boolDevRogue.template
 		SCAN	= ""
 	}
 	{
-		NAME	= "EvrV2:EnableTrig",
-		PATH	= "Top.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[0].EnableTrig"
-		PYPV	= "Top:TriggerEventManager:EvrV2CoreTriggers:EvrV2TriggerReg[0]:EnableTrig"
-		DESC	= "Enables the EvrV2 Trigger Output"
-		DOL		= "1"
-		PINI	= "YES"
-		SAVE	= ""
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
 		NAME	= "Integrators:CntRst",
 		PATH	= "Top.Integrators.CntRst"
 		PYPV	= "Top:Integrators:CntRst"
@@ -609,32 +599,15 @@ file loDevRogue.template
 
 file longDevRogue.template
 {
-	{
-		NAME	= "EvrV2:Polarity",
-		PATH	= "Top.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[0].Polarity"
-		PYPV	= "Top:TriggerEventManager:EvrV2CoreTriggers:EvrV2TriggerReg[0]:Polarity"
-		DESC	= "Trigger Polarity"
-		SAVE	= "VAL"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-	{
-		NAME	= "EvrV2:Source",
-		PATH	= "Top.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[0].Source"
-		PYPV	= "Top:TriggerEventManager:EvrV2CoreTriggers:EvrV2TriggerReg[0]:Source"
-		DESC	= "Trigger Source"
-		DOL	= "0"
-		SAVE	= "VAL"
-		SCAN	= "\$(SCAN=1 second)"
-	}
-        {
-                NAME    = "Integrators:IntegralSigned",
-                PATH    = "Top.Integrators.IntegralSigned"
-                PYPV    = "Top:Integrators:IntegralSigned"
-                DESC    = "Carry Integral sign"
-                PINI    = "YES"
-                SAVE    = "VAL"
-                SCAN    = "\$(SCAN=1 second)"
-        }
+    {
+        NAME    = "Integrators:IntegralSigned",
+        PATH    = "Top.Integrators.IntegralSigned"
+        PYPV    = "Top:Integrators:IntegralSigned"
+        DESC    = "Carry Integral sign"
+        PINI    = "YES"
+        SAVE    = "VAL"
+        SCAN    = "\$(SCAN=1 second)"
+    }
 	{
 		NAME	= "Integrators:BaselineSize",
 		PATH	= "Top.Integrators.BaselineSize"
@@ -838,13 +811,6 @@ file longDevRogue.template
 		SCAN	= ""
 	}
 	{
-		NAME	= "TrEvent:TriggerDelay"
-		PATH	= "Top.TriggerEventManager.TriggerEventBuffer[0].TriggerDelay"
-		PYPV	= "Top:TriggerEventManager:TriggerEventBuffer[0]:TriggerDelay"
-		SAVE	= "VAL"
-		SCAN	= ""
-	}
-	{
 		NAME	= "XpmMini:Config_L0Select_DestSel",
 		DOL		= "32768"
 		PATH	= "Top.XpmMiniWrapper.XpmMini.Config_L0Select_DestSel"
@@ -906,8 +872,8 @@ file int64InDevRogue.template
 	}
 	{
 		NAME	= "EvrV2:Count",
-		PATH	= "Top.TriggerEventManager.EvrV2CoreTriggers.EvrV2ChannelReg[0].Count"
-		PYPV	= "Top:TriggerEventManager:EvrV2CoreTriggers:EvrV2ChannelReg[0]:Count"
+		PATH	= "Top.TriggerEventManager.EvrV2CoreChannels.EvrV2ChannelReg[0].Count"
+		PYPV	= "Top:TriggerEventManager:EvrV2CoreChannels:EvrV2ChannelReg[0]:Count"
 		DESC	= "Count for Start of Timing Frame"
 		SCAN	= "\$(SCAN=1 second)"
 	}
@@ -1028,17 +994,17 @@ file calcout.template
 file longcalc.template
 {
         {
-                CNAME   = "EvrV2:DelayControl"
-                NAME    = "EvrV2:Delay",
-                PATH    = "Top.TriggerEventManager.EvrV2CoreTriggers.EvrV2TriggerReg[0].Delay"
-                PYPV    = "Top:TriggerEventManager:EvrV2CoreTriggers:EvrV2TriggerReg[0]:Delay"
+                CNAME   = "TrEvent:TriggerDelayControl"
+                NAME    = "TrEvent:TriggerDelay",
+                PATH    = "Top.TriggerEventManager.TriggerEventBuffer[0].TriggerDelay"
+                PYPV    = "Top:TriggerEventManager:TriggerEventBuffer[0]:TriggerDelay"
                 DESC    = "Trigger Delay"
                 SAVE    = "VAL"
                 SCAN    = "\$(SCAN=1 second)"
                 CSAVE   = "VAL"
                 EGU     = "ns"
                 CALC    = "A*1.3/7"
-		LCNAME	= "EvrV2:DelayControlReadback"
+		LCNAME	= "TrEvent:TriggerDelayControlReadback"
 		LCALC	= "A*7/1.3"
 		PREC	= "4"
         }
