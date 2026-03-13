@@ -1,0 +1,87 @@
+file boolDevRogue.template
+{
+	{
+		NAME	= "FirFiltering:BypassFilter"
+		PATH	= "Top.FirFiltering.BypassFilter"
+		PYPV	= "Top:FirFiltering:BypassFilter"
+		DESC	= "Used to bypass the FIR filtering"
+		SAVE	= "VAL"
+		PINI	= "YES"
+	}
+}
+
+file aaInOutDevRogue.template
+{
+        {
+                NAME    = "FirFiltering:Ch0:Taps"
+                PATH    = "Top.FirFiltering.Ch[0].Taps"
+                PYPV    = "Top:FirFiltering:Ch[0]:Taps"
+                DESC    = ""
+		NELM	= "33"
+		FTVL	= "DOUBLE"
+                SAVE    = ""
+        }
+	{
+                NAME    = "FirFiltering:Ch1:Taps"
+                PATH    = "Top.FirFiltering.Ch[1].Taps"
+                PYPV    = "Top:FirFiltering:Ch[1]:Taps"
+                DESC    = ""
+                NELM    = "33"
+                FTVL    = "DOUBLE"
+                SAVE    = ""
+        }
+        {
+                NAME    = "FirFiltering:Ch2:Taps"
+                PATH    = "Top.FirFiltering.Ch[2].Taps"
+                PYPV    = "Top:FirFiltering:Ch[2]:Taps"
+                DESC    = ""
+                NELM    = "33"
+                FTVL    = "DOUBLE"
+                SAVE    = ""
+        }
+        {
+                NAME    = "FirFiltering:Ch3:Taps"
+                PATH    = "Top.FirFiltering.Ch[3].Taps"
+                PYPV    = "Top:FirFiltering:Ch[3]:Taps"
+                DESC    = ""
+                NELM    = "33"
+                FTVL    = "DOUBLE"
+                SAVE    = ""
+        }
+        {
+                NAME    = "FirFiltering:Ch4:Taps"
+                PATH    = "Top.FirFiltering.Ch[4].Taps"
+                PYPV    = "Top:FirFiltering:Ch[4]:Taps"
+                DESC    = ""
+                NELM    = "33"
+                FTVL    = "DOUBLE"
+                SAVE    = ""
+        }
+        {
+                NAME    = "FirFiltering:Ch5:Taps"
+                PATH    = "Top.FirFiltering.Ch[5].Taps"
+                PYPV    = "Top:FirFiltering:Ch[5]:Taps"
+                DESC    = ""
+                NELM    = "33"
+                FTVL    = "DOUBLE"
+                SAVE    = ""
+        }
+        {
+                NAME    = "FirFiltering:Ch6:Taps"
+                PATH    = "Top.FirFiltering.Ch[6].Taps"
+                PYPV    = "Top:FirFiltering:Ch[6]:Taps"
+                DESC    = ""
+                NELM    = "33"
+                FTVL    = "DOUBLE"
+                SAVE    = ""
+        }
+        {
+                NAME    = "FirFiltering:Ch7:Taps"
+                PATH    = "Top.FirFiltering.Ch[7].Taps"
+                PYPV    = "Top:FirFiltering:Ch[7]:Taps"
+                DESC    = ""
+                NELM    = "33"
+                FTVL    = "DOUBLE"
+                SAVE    = ""
+        }
+}

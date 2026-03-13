@@ -45,6 +45,26 @@ file roguePcie.db
 	{ PTOP	= "Top" }
 }
 
+file FirFiltering.db
+{
+        {}
+}
+
+file HlsProcessor.db
+{
+        {}
+}
+
+file HlsTrigBuffer.db
+{
+        {}
+}
+
+file HlsDataStream.db
+{
+        {}
+}
+
 file Ads42Lbx9.db
 {
 	{ PTOP	= "Top", ADC = "0" }

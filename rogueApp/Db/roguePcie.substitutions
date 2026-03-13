@@ -553,6 +553,7 @@ file longDevRogue.template
 		NAME	= "RawBuffers:TrigPrescale",
 		PATH	= "Top.RawBuffers.TrigPrescale"
 		PYPV	= "Top:RawBuffers:TrigPrescale"
+		PINI	= "YES"
 		SAVE	= "VAL"
 		SCAN	= ""
 	}

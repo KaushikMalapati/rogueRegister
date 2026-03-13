@@ -85,19 +85,24 @@ int rogue_init_record(
 	pRogueInfo->m_fSignedValue	= false;
 	pRogueInfo->m_pRecCommon	= (struct dbCommon *) record,
 	scanIoInit( &pRogueInfo->m_scanIo );
-	rogue::interfaces::memory::VariablePtr	pVar;
-	pVar = pRogueInfo->m_pRogueLib->getVariable( pRogueInfo->m_varPath );
-	if ( !pVar )
+
+	if ( strstr( varPath, "DataStream" ) != varPath )
 	{
-		printf( "%s error: %s not found!\n", functionName, pRogueInfo->m_varPath.c_str() );
-	}
-	else
-	{
-		pRogueInfo->m_modelId	= pVar->modelId();
-		pRogueInfo->m_numBits	= pVar->bitTotal();
-		if ( pVar->modelId() == rogue::interfaces::memory::Int )
+		rogue::interfaces::memory::VariablePtr	pVar;
+		pVar = pRogueInfo->m_pRogueLib->getVariable( pRogueInfo->m_varPath );
+		if ( !pVar )
 		{
-			pRogueInfo->m_fSignedValue	= true;
+			printf( "%s error: %s not found!\n", functionName, pRogueInfo->m_varPath.c_str() );
+		}
+		else
+		{
+			pRogueInfo->m_modelId	= pVar->modelId();
+			pRogueInfo->m_numBits	= pVar->bitTotal();
+			pRogueInfo->m_numValues = pVar->numValues();
+			if ( pVar->modelId() == rogue::interfaces::memory::Int )
+			{
+				pRogueInfo->m_fSignedValue	= true;
+			}
 		}
 	}
 	record->dpvt				= pRogueInfo;
@@ -108,11 +113,11 @@ int rogue_init_record(
 
 
 template < class R, class V >
-int rogue_read_record( R * record, V & valueRet )
+int rogue_read_record( R * record, V & valueRet, int32_t index )
 {
 	int					status		= 1;
 	rogue_info_t	*	pRogueInfo	= reinterpret_cast < rogue_info_t * >( record->dpvt );
-	status = pRogueInfo->m_pRogueLib->readVarPath( pRogueInfo->m_varPath.c_str(), valueRet );
+	status = pRogueInfo->m_pRogueLib->readVarPath( pRogueInfo->m_varPath.c_str(), valueRet, index );
 
 #if 0
 	const char 		*	functionName = "rogue_read_record<R>";
@@ -137,14 +142,26 @@ int rogue_read_record( R * record, V & valueRet )
 }
 
 template < class R, class V >
-int rogue_write_record( R * record, const V & value )
+int rogue_read_record( R * record, V & valueRet )
+{
+	return rogue_read_record( record, valueRet, -1 );
+}
+
+template < class R, class V >
+int rogue_write_record( R * record, const V & value, int32_t index )
 {
 //	const char 		*	functionName = "rogue_write_record<R>";
 	int					status		= 1;
 	rogue_info_t	*	pRogueInfo	= reinterpret_cast < rogue_info_t * >( record->dpvt );
-	status = pRogueInfo->m_pRogueLib->writeVarPath( pRogueInfo->m_varPath.c_str(), value );
+	status = pRogueInfo->m_pRogueLib->writeVarPath( pRogueInfo->m_varPath.c_str(), value, index );
 
 	return status;
+}
+
+template < class R, class V >
+int rogue_write_record( R * record, const V & value )
+{
+	return rogue_write_record( record, value, -1 );
 }
 
 template < class R >
