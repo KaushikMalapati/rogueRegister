@@ -158,49 +158,84 @@ record( calcout, "$(P)$(R)UpdateSE" )
 	field( PINI, "YES" )
 }
 
-record( calcout, "$(P)$(R)L0DelayChanged" )
+record( calcout, "$(P)$(R)TriggerSourceChanged" )
 {
         field( INPA, "$(P)$(R)Timing:TriggerSource_RBV CPP" )
-	field( INPB, "$(P)$(R)TrEvent:Partition_RBV CPP" )
-        field( CALC, "(A-1)*B" )
+        field( CALC, "A" )
         field( OOPT, "On Change" )
-        field( DOPT, "Use OCAL" )
-	field( OCAL, "B" )
-        field( OUT,  "$(P)$(R)GetL0Delay.SELN" )
-	field( FLNK, "$(P)$(R)GetL0Delay" )
+        field( DOPT, "Use CALC" )
+        field( OUT,  "$(P)$(R)ProcessTS.SELN" )
+        field( FLNK, "$(P)$(R)ProcessTS" )
 }
 
-record( seq, "$(P)$(R)GetL0Delay" )
+record( seq, "$(P)$(R)ProcessTS" )
 {
-	field( SELM, "Specified" )
-	field( DOL0, "$(P)$(R)TrEvent:XpmMsg:PartitionDelay0_RBV" )
-	field( LNK0, "$(P)$(R)ApplyL0Delay.A" )
-	field( DOL1, "$(P)$(R)TrEvent:XpmMsg:PartitionDelay1_RBV" )
-        field( LNK1, "$(P)$(R)ApplyL0Delay.A" )
-	field( DOL2, "$(P)$(R)TrEvent:XpmMsg:PartitionDelay2_RBV" )
-        field( LNK2, "$(P)$(R)ApplyL0Delay.A" )
-	field( DOL3, "$(P)$(R)TrEvent:XpmMsg:PartitionDelay3_RBV" )
-        field( LNK3, "$(P)$(R)ApplyL0Delay.A" )
-	field( DOL4, "$(P)$(R)TrEvent:XpmMsg:PartitionDelay4_RBV" )
-        field( LNK4, "$(P)$(R)ApplyL0Delay.A" )
-	field( DOL5, "$(P)$(R)TrEvent:XpmMsg:PartitionDelay5_RBV" )
-        field( LNK5, "$(P)$(R)ApplyL0Delay.A" )
-	field( DOL6, "$(P)$(R)TrEvent:XpmMsg:PartitionDelay6_RBV" )
-        field( LNK6, "$(P)$(R)ApplyL0Delay.A" )
-	field( DOL7, "$(P)$(R)TrEvent:XpmMsg:PartitionDelay7_RBV" )
-        field( LNK7, "$(P)$(R)ApplyL0Delay.A" )
+        field( SELM, "Specified" )
+	field( DOL0, "1" )
+        field( LNK0, "$(P)$(R)SaveOldDelay.PROC" )
+        field( DOL1, "1" )
+        field( LNK1, "$(P)$(R)RestoreOldDelay.PROC" )
+}
+
+record( calcout, "$(P)$(R)PartitionChanged" )
+{
+        field( INPA, "$(P)$(R)TrEvent:Partition_RBV CPP" )
+        field( CALC, "A" )
+        field( OOPT, "Every Time" )
+        field( DOPT, "Use CALC" )
+        field( OUT,  "$(P)$(R)ProcessL0.SELN" )
+        field( FLNK, "$(P)$(R)ProcessL0" )
+}
+
+record( seq, "$(P)$(R)ProcessL0" )
+{
+        field( SELM, "Specified" )
+        field( DOL0, "$(P)$(R)TrEvent:XpmMsg:PartitionDelay0_RBV" )
+        field( LNK0, "$(P)$(R)ApplyL0Delay.A CP" )
+        field( DOL1, "$(P)$(R)TrEvent:XpmMsg:PartitionDelay1_RBV" )
+        field( LNK1, "$(P)$(R)ApplyL0Delay.A CP" )
+        field( DOL2, "$(P)$(R)TrEvent:XpmMsg:PartitionDelay2_RBV" )
+        field( LNK2, "$(P)$(R)ApplyL0Delay.A CP" )
+        field( DOL3, "$(P)$(R)TrEvent:XpmMsg:PartitionDelay3_RBV" )
+        field( LNK3, "$(P)$(R)ApplyL0Delay.A CP" )
+        field( DOL4, "$(P)$(R)TrEvent:XpmMsg:PartitionDelay4_RBV" )
+        field( LNK4, "$(P)$(R)ApplyL0Delay.A CP" )
+        field( DOL5, "$(P)$(R)TrEvent:XpmMsg:PartitionDelay5_RBV" )
+        field( LNK5, "$(P)$(R)ApplyL0Delay.A CP" )
+        field( DOL6, "$(P)$(R)TrEvent:XpmMsg:PartitionDelay6_RBV" )
+        field( LNK6, "$(P)$(R)ApplyL0Delay.A CP" )
+        field( DOL7, "$(P)$(R)TrEvent:XpmMsg:PartitionDelay7_RBV" )
+        field( LNK7, "$(P)$(R)ApplyL0Delay.A CP" )
+}
+
+record( longin, "$(P)$(R)SaveOldDelay" )
+{
+        field( INP, "$(P)$(R)TrEvent:TriggerDelay_RBV NPP" )
+        field( FLNK, "$(P)$(R)PartitionChanged" )
+	info( autosaveFields, "VAL" )
+}
+
+record( longout, "$(P)$(R)RestoreOldDelay" )
+{
+	field( SDIS, "$(P)$(R)SaveOldDelay" )
+        field( DISV, "0" )
+	field( OMSL, "closed_loop" )
+        field( DOL, "$(P)$(R)SaveOldDelay NPP" )
+	field( OUT, "$(P)$(R)TrEvent:TriggerDelay PP" )
 }
 
 record( calcout, "$(P)$(R)ApplyL0Delay" )
 {
         field( INPA, "0" )
-        field( INPB, "$(P)$(R)Timing:TriggerSource_RBV" )
-	field( INPC, "$(P)$(R)TrEvent:TriggerDelay_RBV" )
-        field( CALC, "C - (200 * A * B=0 ? 1 : -1)" )
+        field( INPB, "$(P)$(R)SaveOldDelay" )
+        field( CALC, "B - (200 * A)" )
         field( OOPT, "On Change" )
         field( DOPT, "Use CALC" )
         field( OUT,  "$(P)$(R)TrEvent:TriggerDelay PP" )
+	field( LOW, "-1" )
+	field( LSV, "MINOR" )
 }
+
 
 # Put monitors
 # Note: SER_OK_PV macro refers to typical use in serial I/O, but same principle here.

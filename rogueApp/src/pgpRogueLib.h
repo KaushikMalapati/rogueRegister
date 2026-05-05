@@ -117,9 +117,9 @@ public:		//	Public member functions
 	bool	getTriggerEnable( unsigned int triggerNum );
 
 #endif
-	template<class R> int readVarPath(	const char * pVarPath, R & valueRet, int32_t index = -1 );
-	template<class R> int writeVarPath(	const char * pVarPath, const R & value, int32_t index = -1 );
-	template<class R> int writeVarPath( rogue::interfaces::memory::VariablePtr pVar, const R & value, int32_t index = -1 );
+	template<class R> int readVarPath(	const char * pVarPath, R & valueRet );
+	template<class R> int writeVarPath(	const char * pVarPath, const R & value );
+	template<class R> int writeVarPath( rogue::interfaces::memory::VariablePtr pVar, const R & value );
 
 private:
 	//	Private member variables

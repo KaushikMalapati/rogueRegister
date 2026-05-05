@@ -376,19 +376,19 @@ rim::VariablePtr	pgpRogueLib::_VFindVar(
 	return( pVar );
 }
 
-template<class R> static int fixedReadValue( rim::VariablePtr pVar, int32_t index, R & valueRet )
+template<class R> static int fixedReadValue( rim::VariablePtr pVar, R & valueRet )
 {
 	printf( "fixedReadValue error: %s is Fixed; use double type for read\n", pVar->path().c_str() );
 	return -1;
 }
 
-template<> int fixedReadValue<double>( rim::VariablePtr pVar, int32_t index, double & valueRet )
+template<> int fixedReadValue<double>( rim::VariablePtr pVar, double & valueRet )
 {
-	valueRet = pVar->getFixed( index );
+	valueRet = pVar->getFixed();
 	return 0;
 }
 
-template<class R> int pgpRogueLib::readVarPath( const char * pszVarPath, R & valueRet, int32_t index )
+template<class R> int pgpRogueLib::readVarPath( const char * pszVarPath, R & valueRet )
 {
 	const char *	functionName = "pgpRogueLib::readVarPath";
 	int				status	= -1;
@@ -406,13 +406,13 @@ template<class R> int pgpRogueLib::readVarPath( const char * pszVarPath, R & val
 	{
 		if ( pVar->modelId() == rim::Fixed )
 		{
-			int readStatus = fixedReadValue( pVar, index, valueRet );
+			int readStatus = fixedReadValue( pVar,  valueRet );
 			if ( readStatus != 0 )
 				return readStatus;
 		}
 		else
 		{
-			pVar->getValue( valueRet, index );
+			pVar->getValue( valueRet );
 		}
 		status = 0;
 	}
@@ -448,27 +448,27 @@ template<class R> int pgpRogueLib::readVarPath( const char * pszVarPath, R & val
 	return status;
 }
 
-template int pgpRogueLib::readVarPath( const char * pszVarPath, bool		& valueRet, int32_t index = -1 );
-template int pgpRogueLib::readVarPath( const char * pszVarPath, float           & valueRet, int32_t index = -1 );
-template int pgpRogueLib::readVarPath( const char * pszVarPath, double		& valueRet, int32_t index = -1 );
-template int pgpRogueLib::readVarPath( const char * pszVarPath, int64_t		& valueRet, int32_t index = -1 );
-template int pgpRogueLib::readVarPath( const char * pszVarPath, uint64_t	& valueRet, int32_t index = -1 );
-template int pgpRogueLib::readVarPath( const char * pszVarPath, std::string	& valueRet, int32_t index = -1 );
+template int pgpRogueLib::readVarPath( const char * pszVarPath, bool		& valueRet );
+template int pgpRogueLib::readVarPath( const char * pszVarPath, float           & valueRet );
+template int pgpRogueLib::readVarPath( const char * pszVarPath, double		& valueRet );
+template int pgpRogueLib::readVarPath( const char * pszVarPath, int64_t		& valueRet );
+template int pgpRogueLib::readVarPath( const char * pszVarPath, uint64_t	& valueRet );
+template int pgpRogueLib::readVarPath( const char * pszVarPath, std::string	& valueRet );
 
-template<class R> static int fixedWriteValue( rim::VariablePtr pVar, int32_t index, const R & value )
+template<class R> static int fixedWriteValue( rim::VariablePtr pVar, const R & value )
 {
 	printf( "fixedWriteValue error: %s is Fixed; use double type for write\n", pVar->path().c_str() );
 	return -1;
 }
 
-template<> int fixedWriteValue<double>( rim::VariablePtr pVar, int32_t index, const double & value )
+template<> int fixedWriteValue<double>( rim::VariablePtr pVar, const double & value )
 {
 	double fixedValue = value;
-	pVar->setFixed( fixedValue, index );
+	pVar->setFixed( fixedValue );
 	return 0;
 }
 
-template<class R> int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const R & value, int32_t index )
+template<class R> int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const R & value )
 {
 	const char *	functionName = "pgpRogueLib::writeVarPath";
 	int				status	= -1;
@@ -498,27 +498,44 @@ template<class R> int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const R 
 	{
 		if ( pVar->modelId() == rim::Fixed )
 		{
-			int writeStatus = fixedWriteValue( pVar, index, value );
+			int writeStatus = fixedWriteValue( pVar, value );
 			if ( writeStatus != 0 )
 				return writeStatus;
 		}
 		else
 		{
-			pVar->setValue( value, index );
+			pVar->setValue( value );
 		}
 		status = 0;
 		if ( pVar->mode() != std::string("WO") )
 		{
 			R	valueRet;
-			pVar->getValue( valueRet );
-			if ( DEBUG_PGP_ROGUE_LIB >= 3 || value != valueRet )
+			int readStatus = 0;
+			int writeError = 0;
+			if ( pVar->modelId() == rim::Fixed )
+			{
+                                readStatus = fixedReadValue( pVar,  valueRet );
+				writeError = (readStatus != 0 || fabs(value - valueRet) > 0.0001);
+                        }
+                        else
+                        {
+                                pVar->getValue( valueRet );
+				writeError = value != valueRet;
+                        }
+
+			if ( DEBUG_PGP_ROGUE_LIB >= 3 || writeError )
 			{
 				std::cout	<< functionName	<< ": " << pVar->path()
 							<< ", setValue="	<< value;
-				if ( value != valueRet )
+				if ( pVar->modelId() != rim::Fixed && writeError )
 				{
 					std::cout	<< ", Error getValue="	<< valueRet << std::endl;
 					status	= -2;
+				}
+				else if ( pVar->modelId() == rim::Fixed && writeError )
+				{
+					std::cout       << ", Error getValue="  << valueRet << ", readStatus=" << readStatus << std::endl;
+					status  = -2;
 				}
 				else
 					std::cout	<< ", getValue="	<< valueRet << std::endl;
@@ -537,7 +554,7 @@ template<class R> int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const R 
 	return status;
 }
 
-template<class R> int pgpRogueLib::writeVarPath( const char * pszVarPath, const R & value, int32_t index )
+template<class R> int pgpRogueLib::writeVarPath( const char * pszVarPath, const R & value )
 {
 	const char *	functionName = "pgpRogueLib::writeVarPath";
 	std::string		varPath( pszVarPath );
@@ -549,20 +566,20 @@ template<class R> int pgpRogueLib::writeVarPath( const char * pszVarPath, const 
 		printf( "%s error: %s not found!\n", functionName, varPath.c_str() );
 		return -1;
 	}
-	return writeVarPath( pVar, value, index );
+	return writeVarPath( pVar, value );
 }
 
-template int pgpRogueLib::writeVarPath( const char * pszVarPath, const bool     & value, int32_t index = -1 );
-template int pgpRogueLib::writeVarPath( const char * pszVarPath, const float    & value, int32_t index = -1 );
-template int pgpRogueLib::writeVarPath( const char * pszVarPath, const double	& value, int32_t index = -1 );
-template int pgpRogueLib::writeVarPath( const char * pszVarPath, const int64_t	& value, int32_t index = -1 );
-template int pgpRogueLib::writeVarPath( const char * pszVarPath, const uint64_t	& value, int32_t index = -1 );
+template int pgpRogueLib::writeVarPath( const char * pszVarPath, const bool     & value );
+template int pgpRogueLib::writeVarPath( const char * pszVarPath, const float    & value );
+template int pgpRogueLib::writeVarPath( const char * pszVarPath, const double	& value );
+template int pgpRogueLib::writeVarPath( const char * pszVarPath, const int64_t	& value );
+template int pgpRogueLib::writeVarPath( const char * pszVarPath, const uint64_t	& value );
 
-template int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const bool	& value, int32_t index = -1 );
-template int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const float      & value, int32_t index = -1 );
-template int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const double	& value, int32_t index = -1 );
-template int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const int64_t	& value, int32_t index = -1 );
-template int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const uint64_t	& value, int32_t index = -1 );
+template int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const bool	& value );
+template int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const float      & value );
+template int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const double	& value );
+template int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const int64_t	& value );
+template int pgpRogueLib::writeVarPath( rim::VariablePtr pVar, const uint64_t	& value );
 
 void pgpRogueLib::dumpVariables( const char * pszFilePath, bool fWritableOnly, bool fForceRead, bool verbose )
 {

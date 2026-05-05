@@ -1,9 +1,0 @@
-# aaInOutDevRogue.template
-
-include "aaoDevRogue.template"
-substitute "PINI=$(IPINI=YES)"
-include "aaiDevRogue.template"
-record( aao, "$(P)$(R)$(NAME)" )
-{
-	field( FLNK, "$(P)$(R)$(NAME)_RBV" )
-}

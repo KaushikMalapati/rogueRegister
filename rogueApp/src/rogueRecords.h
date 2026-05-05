@@ -113,11 +113,11 @@ int rogue_init_record(
 
 
 template < class R, class V >
-int rogue_read_record( R * record, V & valueRet, int32_t index )
+int rogue_read_record( R * record, V & valueRet )
 {
 	int					status		= 1;
 	rogue_info_t	*	pRogueInfo	= reinterpret_cast < rogue_info_t * >( record->dpvt );
-	status = pRogueInfo->m_pRogueLib->readVarPath( pRogueInfo->m_varPath.c_str(), valueRet, index );
+	status = pRogueInfo->m_pRogueLib->readVarPath( pRogueInfo->m_varPath.c_str(), valueRet );
 
 #if 0
 	const char 		*	functionName = "rogue_read_record<R>";
@@ -142,26 +142,14 @@ int rogue_read_record( R * record, V & valueRet, int32_t index )
 }
 
 template < class R, class V >
-int rogue_read_record( R * record, V & valueRet )
-{
-	return rogue_read_record( record, valueRet, -1 );
-}
-
-template < class R, class V >
-int rogue_write_record( R * record, const V & value, int32_t index )
+int rogue_write_record( R * record, const V & value )
 {
 //	const char 		*	functionName = "rogue_write_record<R>";
 	int					status		= 1;
 	rogue_info_t	*	pRogueInfo	= reinterpret_cast < rogue_info_t * >( record->dpvt );
-	status = pRogueInfo->m_pRogueLib->writeVarPath( pRogueInfo->m_varPath.c_str(), value, index );
+	status = pRogueInfo->m_pRogueLib->writeVarPath( pRogueInfo->m_varPath.c_str(), value );
 
 	return status;
-}
-
-template < class R, class V >
-int rogue_write_record( R * record, const V & value )
-{
-	return rogue_write_record( record, value, -1 );
 }
 
 template < class R >

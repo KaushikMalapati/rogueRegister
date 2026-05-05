@@ -727,6 +727,68 @@ value {
 }
 endObjectProperties
 
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 0
+y 60
+w 356
+h 24
+
+beginGroup
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 0
+y 64
+w 120
+h 20
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+value {
+  "XpmMini Trig Rate"
+}
+endObjectProperties
+
+endGroup
+
+visPv "CALC\\\{A*B+C\}($(P)$(R)Timing:TriggerSource_RBV, 10, $(PGP):Timing:UseMiniTpg)"
+visMin "11"
+visMax "12"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 0
+y 90
+w 320
+h 40
+font "helvetica-medium-r-12.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+value {
+  "Attempted to subtract L0 Delay from TriggerDelay"
+  "but the result was negative. Delay not changed."
+}
+visPv "$(P)$(R)ApplyL0Delay"
+visMin "-2147483648"
+visMax "0"
+endObjectProperties
+
 endGroup
 
 visPv "$(P)$(R)Timing:TriggerSource_RBV"
